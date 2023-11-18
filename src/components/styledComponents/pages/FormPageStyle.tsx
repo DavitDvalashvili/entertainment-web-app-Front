@@ -89,6 +89,17 @@ const FormPageStyle = styled.div`
       }
     }
   }
+  .note {
+    padding: 15px;
+    font-size: 15px;
+  }
+  .note-success {
+    background-color: green;
+  }
+  .note-fail {
+    background-color: ${DefaultTheme.colors.red};
+  }
+
   @media (min-width: 768px) {
     gap: 72.4px;
     padding: 88px 24px 170px 24px;
@@ -110,10 +121,10 @@ const FormPageStyle = styled.div`
       }
     }
   }
-  /* @media (min-width: 1440px) {
+  @media (min-width: 1440px) {
     gap: 82.99px;
-    padding: 78.41px 24px 170px 24px;
-  } */
+    padding: 78.41px 24px 205px 24px;
+  }
 `;
 
 export default FormPageStyle;

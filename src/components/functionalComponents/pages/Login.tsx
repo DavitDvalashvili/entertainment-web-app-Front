@@ -55,7 +55,7 @@ const Login = () => {
       <div className="container">
         <h2>Login</h2>
         <form onSubmit={handleSubmit(submitFunction)}>
-          <div className="email">
+          <div className={errors.email ? "email errorEmail" : "email"}>
             <input
               type="text"
               placeholder="Email address"
@@ -69,7 +69,9 @@ const Login = () => {
             />
             {errors.email && <span>{errors.email?.message}</span>}
           </div>
-          <div className="password">
+          <div
+            className={errors.password ? "password errorPassword" : "password"}
+          >
             <input
               type="text"
               placeholder="Password"
@@ -93,8 +95,10 @@ const Login = () => {
         </p>
       </div>
       {wait && (
-        <span className="note">
-          {validate ? "Login successfully" : "User not found"}
+        <span className={validate ? "note note-success" : "note note-fail"}>
+          {validate
+            ? "Login successfully"
+            : "User not found, check email or password"}
         </span>
       )}
     </FormPageStyle>
