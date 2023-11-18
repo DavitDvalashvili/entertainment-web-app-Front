@@ -1,10 +1,13 @@
+import Layout from "../../styledComponents/Layout";
+import Header from "../Header";
 
 const Bookmarks = () => {
-    return (
-        <>
-        bookmark
-        </>
-    )
-}
+  return (
+    <Layout>
+      <Header />
+      <section>bookmark</section>
+    </Layout>
+  );
+};
 
 export default Bookmarks;

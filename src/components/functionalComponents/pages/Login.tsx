@@ -4,12 +4,11 @@ import logo from "../../../assets/logo.svg";
 import { LoginInputs } from "../../../Types";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { userContext } from "../../../App";
-import { useContext, useState, useRef } from "react";
+import { useContext, useState } from "react";
 
 const Login = () => {
   const [validate, setValidate] = useState<boolean>(false);
   const [wait, setWait] = useState<boolean>(false);
-  const buttonRef = useRef<HTMLButtonElement | null>(null);
 
   //create context
   const context = useContext(userContext);
@@ -86,7 +85,7 @@ const Login = () => {
             />
             {errors.password && <span>{errors.password.message}</span>}
           </div>
-          <button type="submit" ref={buttonRef} onClick={() => {}}>
+          <button type="submit" onClick={() => {}}>
             Login to your account
           </button>
         </form>
