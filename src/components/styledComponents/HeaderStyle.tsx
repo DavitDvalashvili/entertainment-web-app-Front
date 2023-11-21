@@ -2,12 +2,12 @@ import styled from "styled-components";
 import DefaultTheme from "../../DefaultTheme";
 
 const HeaderStyle = styled.nav`
-  background-color: ${DefaultTheme.colors.semiDarkBlue};
+  //background-color: ${DefaultTheme.colors.semiDarkBlue};
+  background-color: red;
   padding: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-radius: 10px;
   .logo {
     width: 25px;
   }
@@ -25,6 +25,11 @@ const HeaderStyle = styled.nav`
       path {
         height: 16px;
       }
+      &:hover {
+        path {
+          fill: ${DefaultTheme.colors.red};
+        }
+      }
     }
     .active {
       path {
@@ -36,6 +41,7 @@ const HeaderStyle = styled.nav`
   @media (min-width: 768px) {
     margin: 23px 24px 0px 24px;
     padding: 24px;
+    border-radius: 10px;
     .logo {
       width: 32px;
     }

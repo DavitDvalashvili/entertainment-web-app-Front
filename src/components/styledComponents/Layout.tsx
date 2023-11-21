@@ -5,8 +5,9 @@ const Layout = styled.div`
   flex-direction: column;
   justify-content: center;
   section {
-    background-color: red;
+    //background-color: red;
     width: 100%;
+    overflow-y: hidden;
   }
   @media (min-width: 1440px) {
     flex-direction: row;
