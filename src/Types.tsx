@@ -27,7 +27,7 @@ export type searchPropsType = {
 
 interface ThumbnailType {
   small: string;
-  medium?: string; // Optional property
+  medium?: string;
   large: string;
   _id: string;
 }
