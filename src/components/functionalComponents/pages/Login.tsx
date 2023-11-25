@@ -42,7 +42,7 @@ const Login = () => {
     console.log(`validate 2: ${validate}`);
     console.log(`wait: ${wait}`);
     if (!wait && validate) {
-      navigate("/AllContent");
+      navigate("/allContent");
     }
   };
 
@@ -85,9 +85,7 @@ const Login = () => {
             />
             {errors.password && <span>{errors.password.message}</span>}
           </div>
-          <button type="submit" onClick={() => {}}>
-            Login to your account
-          </button>
+          <button type="submit">Login to your account</button>
         </form>
         <p>
           Don’t have an account? <Link to={"/signUp"}>Sign Up</Link>

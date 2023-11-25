@@ -90,7 +90,7 @@ const MovieList: React.FC = () => {
                         className="imageBox"
                         onClick={() => bookmarkToggle(movie.id)}
                       >
-                        {movie.isBookmarked && (
+                        {!movie.isBookmarked && (
                           <svg
                             className="bookmarkEmpty"
                             width="12"
@@ -105,7 +105,7 @@ const MovieList: React.FC = () => {
                             />
                           </svg>
                         )}
-                        {!movie.isBookmarked && (
+                        {movie.isBookmarked && (
                           <svg
                             className="bookmarkFull"
                             width="12"

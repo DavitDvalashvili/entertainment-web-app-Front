@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import DefaultTheme from "../../DefaultTheme";
 
 const TrendingStyle = styled.section`
   padding-left: 16px;
@@ -53,7 +54,7 @@ const TrendingStyle = styled.section`
                 stroke: black;
               }
             }
-            background-color: white;
+            background-color: ${DefaultTheme.colors.pureWhite};
           }
         }
         .playBox {

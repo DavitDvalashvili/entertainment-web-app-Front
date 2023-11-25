@@ -3,6 +3,7 @@ import Layout from "../../styledComponents/Layout";
 import Trending from "../Trending";
 import SearchBox from "../SearchBox";
 import { useState } from "react";
+import PageContent from "../PageContent";
 
 const AllContent = () => {
   const [searchValue, setSearchValue] = useState<string>("");
@@ -12,7 +13,11 @@ const AllContent = () => {
       <Header />
       <section className="main">
         <SearchBox searchValue={searchValue} setSearchValue={setSearchValue} />
-        <Trending />
+        {!searchValue && <Trending />}
+        <PageContent
+          searchValue={searchValue}
+          setSearchValue={setSearchValue}
+        />
       </section>
     </Layout>
   );
