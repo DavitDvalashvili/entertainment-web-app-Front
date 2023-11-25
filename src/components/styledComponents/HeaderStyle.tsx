@@ -2,8 +2,7 @@ import styled from "styled-components";
 import DefaultTheme from "../../DefaultTheme";
 
 const HeaderStyle = styled.nav`
-  //background-color: ${DefaultTheme.colors.semiDarkBlue};
-  background-color: red;
+  background-color: ${DefaultTheme.colors.semiDarkBlue};
   padding: 16px;
   display: flex;
   justify-content: space-between;

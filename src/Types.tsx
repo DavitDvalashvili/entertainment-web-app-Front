@@ -24,6 +24,12 @@ export type searchPropsType = {
   searchValue: string;
   setSearchValue: React.Dispatch<React.SetStateAction<string>>;
 };
+export type PagePropsType = {
+  searchValue: string;
+  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
+  pathname: string;
+  header: string;
+};
 
 interface ThumbnailType {
   small: string;

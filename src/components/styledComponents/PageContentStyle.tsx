@@ -2,7 +2,7 @@ import styled from "styled-components";
 import DefaultTheme from "../../DefaultTheme";
 
 const PageContentStyle = styled.section`
-  padding: 24px 16px 38px 16px;
+  padding: 24px 16px 0px 16px;
   h2 {
     font-size: 20px;
     font-weight: 300;
@@ -104,7 +104,7 @@ const PageContentStyle = styled.section`
     }
   }
   @media (min-width: 768px) {
-    padding: 39px 24px 56px 24px;
+    padding: 39px 24px 0px 24px;
     h2 {
       font-size: 32px;
       font-weight: 300;
@@ -134,7 +134,7 @@ const PageContentStyle = styled.section`
     }
   }
   @media (min-width: 1440px) {
-    padding: 40px 36px 52px 36px;
+    padding: 40px 36px 0px 36px;
     .movieContainer {
       grid-template-columns: 1fr 1fr 1fr 1fr;
       row-gap: 32px;

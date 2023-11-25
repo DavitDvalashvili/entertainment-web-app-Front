@@ -1,4 +1,4 @@
-import FormPageStyle from "../../styledComponents/pages/FormPageStyle";
+import FormPageStyle from "../../styledComponents/FormPageStyle";
 import Logo from "../../../assets/logo.svg";
 import { SignUpInputs } from "../../../Types";
 import { useNavigate, Link } from "react-router-dom";

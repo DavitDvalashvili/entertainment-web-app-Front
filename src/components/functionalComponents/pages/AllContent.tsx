@@ -17,6 +17,8 @@ const AllContent = () => {
         <PageContent
           searchValue={searchValue}
           setSearchValue={setSearchValue}
+          pathname={"/"}
+          header="Recommended for you"
         />
       </section>
     </Layout>
