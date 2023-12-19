@@ -99,6 +99,11 @@ const FormPageStyle = styled.div`
   .note-fail {
     background-color: ${DefaultTheme.colors.red};
   }
+  .Toastify__toast-body {
+    div {
+      color: ${DefaultTheme.colors.darkBlue};
+    }
+  }
 
   @media (min-width: 768px) {
     gap: 72.4px;

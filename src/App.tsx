@@ -23,8 +23,6 @@ export const userContext = createContext<undefined | UserContextType>(
 
 function App() {
   const [load, setLoad] = useState(true);
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
 
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -41,10 +39,8 @@ function App() {
   );
 
   const contextValue = {
-    email,
-    setEmail,
-    password,
-    setPassword,
+    load,
+    setLoad,
   };
 
   useEffect(() => {

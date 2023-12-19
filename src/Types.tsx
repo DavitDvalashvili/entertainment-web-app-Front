@@ -14,10 +14,8 @@ export type SignUpInputs = {
 };
 
 export type UserContextType = {
-  email: string;
-  setEmail: React.Dispatch<React.SetStateAction<string>>;
-  password: string;
-  setPassword: React.Dispatch<React.SetStateAction<string>>;
+  load: boolean;
+  setLoad: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export type searchPropsType = {

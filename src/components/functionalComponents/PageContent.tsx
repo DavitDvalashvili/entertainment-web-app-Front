@@ -45,8 +45,6 @@ const PageContent = (props: PagePropsType) => {
     } else {
       fetchData();
     }
-
-    console.log(props.searchValue);
   }, [props.searchValue]);
 
   //print loading... when data is loading

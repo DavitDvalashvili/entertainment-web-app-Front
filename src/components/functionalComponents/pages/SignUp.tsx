@@ -3,11 +3,28 @@ import Logo from "../../../assets/logo.svg";
 import { SignUpInputs } from "../../../Types";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { userContext } from "../../../App";
-import { useContext } from "react";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const SignUp = () => {
-  const context = useContext(userContext);
+  const navigate = useNavigate();
+
+  // display error message on the screen
+  const handleError = (message: string | undefined) => {
+    toast.error(message, {
+      position: "bottom-left",
+      autoClose: 1000,
+    });
+  };
+
+  //display success message on the screen
+  const handleSuccess = (message: string) => {
+    toast.success(message, {
+      position: "bottom-right",
+      autoClose: 1000,
+    });
+  };
 
   const {
     register,
@@ -16,13 +33,35 @@ const SignUp = () => {
     formState: { errors },
   } = useForm<SignUpInputs>();
 
-  const navigate = useNavigate();
-  const submitFunction: SubmitHandler<SignUpInputs> = (data) => {
-    context?.setPassword(data.password);
-    context?.setEmail(data.email);
-    navigate("/login");
+  //const navigate = useNavigate();
+  const submitFunction: SubmitHandler<SignUpInputs> = async (data) => {
+    //navigate("/login");
+    //console.log(data);
+    try {
+      const response = await axios.post("http://localhost:3003/signup", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      //displays message ;
+      if (response.data.success) {
+        // Sign-up successful
+        handleSuccess(response.data.message);
+        //after 1 second navigate to login page
+        setTimeout(() => {
+          navigate("/login");
+        }, 1000);
+      } else {
+        // Sign-up failed
+        handleError(response.data.message);
+      }
+    } catch (error) {
+      console.error("Sign-up failed", error);
+      handleError("Sign-up failed, server error");
+    }
   };
 
+  //check if repeated password matches the password
   const validatePasswordRepeat = () => {
     const password = watch("password");
     const repeatPassword = watch("repeatPassword");
@@ -95,6 +134,7 @@ const SignUp = () => {
           Already have an account? <Link to={"/login"}>Login</Link>
         </p>
       </div>
+      <ToastContainer />
     </FormPageStyle>
   );
 };
