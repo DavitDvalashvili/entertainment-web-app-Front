@@ -10,10 +10,23 @@ const HeaderStyle = styled.nav`
   .logo {
     width: 25px;
   }
-  .avatar {
-    width: 24px;
-    border: 1px solid ${DefaultTheme.colors.pureWhite};
-    border-radius: 50%;
+  .logoutAvatarBox {
+    .avatar {
+      width: 24px;
+      border: 1px solid ${DefaultTheme.colors.pureWhite};
+      border-radius: 50%;
+    }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    font-size: 10px;
+    span {
+      &:hover {
+        cursor: pointer;
+        color: ${DefaultTheme.colors.red};
+      }
+    }
   }
   nav {
     display: flex;
@@ -44,8 +57,10 @@ const HeaderStyle = styled.nav`
     .logo {
       width: 32px;
     }
-    .avatar {
-      width: 32px;
+    .logoutAvatarBox {
+      .avatar {
+        width: 32px;
+      }
     }
     nav {
       svg {
@@ -67,8 +82,11 @@ const HeaderStyle = styled.nav`
       margin-top: 75px;
       gap: 35px;
     }
-    .avatar {
+    .logoutAvatarBox {
       margin-top: auto;
+      flex-direction: column;
+      gap: 12px;
+      font-size: 12px;
     }
   }
 `;

@@ -13,9 +13,9 @@ export type SignUpInputs = {
   repeatPassword: string;
 };
 
-export type UserContextType = {
-  load: boolean;
-  setLoad: React.Dispatch<React.SetStateAction<boolean>>;
+export type headerPropsType = {
+  expired: boolean;
+  setExpired: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export type searchPropsType = {

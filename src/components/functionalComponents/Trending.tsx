@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import iconMovies from "../../assets/icon-category-movie.svg";
 import iconTvseries from "../../assets/icon-category-tv.svg";
@@ -8,7 +8,7 @@ import play from "../../assets/icon-play.svg";
 import useWindowWidth from "../../Hooks/useWindowWidth";
 import { DataType } from "../../Types";
 
-const MovieList: React.FC = () => {
+function MovieList() {
   const [movies, setMovies] = useState<DataType[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -17,18 +17,18 @@ const MovieList: React.FC = () => {
   const width = useWindowWidth();
 
   //create get request
-  const fetchData = async () => {
+  async function fetchData() {
     try {
-      const response = await axios.get<DataType[]>("http://localhost:3003");
+      const response = await axios.get<DataType[]>(
+        `${import.meta.env.VITE_API_URL}`
+      );
       setMovies(response.data);
     } catch (error) {
       setError("Error fetching data");
     } finally {
       setLoading(false);
     }
-  };
-
-  //const postData = async () => {};
+  }
 
   useEffect(() => {
     fetchData();
@@ -49,7 +49,7 @@ const MovieList: React.FC = () => {
   const bookmarkToggle = async (movieID: string) => {
     try {
       const response = await axios.put(
-        `http://localhost:3003/movies/${movieID}`
+        `${import.meta.env.VITE_API_URL}/movies/${movieID}`
       );
 
       //update movie info abd render new info
@@ -149,6 +149,6 @@ const MovieList: React.FC = () => {
       </div>
     </TrendingStyle>
   );
-};
+}
 
 export default MovieList;

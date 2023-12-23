@@ -2,15 +2,26 @@ import Header from "../Header";
 import Layout from "../../styledComponents/Layout";
 import Trending from "../Trending";
 import SearchBox from "../SearchBox";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PageContent from "../PageContent";
+import { useNavigate } from "react-router-dom";
 
 const AllContent = () => {
   const [searchValue, setSearchValue] = useState<string>("");
+  const navigate = useNavigate();
+
+  const [expired, setExpired] = useState(false);
+  const Token = localStorage.getItem("authToken");
+  useEffect(() => {
+    if (!Token) {
+      navigate("/login");
+      setExpired(true);
+    }
+  }, [Token, expired, navigate]);
 
   return (
     <Layout>
-      <Header />
+      <Header expired={expired} setExpired={setExpired} />
       <section className="main">
         <SearchBox searchValue={searchValue} setSearchValue={setSearchValue} />
         {!searchValue && <Trending />}

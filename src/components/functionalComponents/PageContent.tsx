@@ -20,7 +20,7 @@ const PageContent = (props: PagePropsType) => {
   const fetchData = async () => {
     try {
       const response = await axios.get<DataType[]>(
-        `http://localhost:3003${props.pathname}`
+        `${import.meta.env.VITE_API_URL}${props.pathname}`
       );
       setMovies(response.data);
     } catch (error) {
@@ -64,7 +64,7 @@ const PageContent = (props: PagePropsType) => {
   const bookmarkToggle = async (movieID: string) => {
     try {
       const response = await axios.put(
-        `http://localhost:3003/movies/${movieID}`
+        `${import.meta.env.VITE_API_URL}/movies/${movieID}`
       );
 
       //update movie info and render new info

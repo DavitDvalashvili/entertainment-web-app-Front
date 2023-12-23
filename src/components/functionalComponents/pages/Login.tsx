@@ -1,52 +1,65 @@
 import FormPageStyle from "../../styledComponents/FormPageStyle";
-import { useNavigate, Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../../assets/logo.svg";
 import { LoginInputs } from "../../../Types";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { userContext } from "../../../App";
-import { useContext, useState } from "react";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
-  const [validate, setValidate] = useState<boolean>(false);
-  const [wait, setWait] = useState<boolean>(false);
+  // display error message on the screen
+  const handleError = (message: string | undefined) => {
+    toast.error(message, {
+      position: "bottom-left",
+      autoClose: 1000,
+    });
+  };
 
-  //create context
-  const context = useContext(userContext);
-  const navigate = useNavigate();
+  //display success message on the screen
+  const handleSuccess = (message: string) => {
+    toast.success(message, {
+      position: "bottom-right",
+      autoClose: 1000,
+    });
+  };
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    getValues,
   } = useForm<LoginInputs>();
 
-  const validationFun = () => {
-    const timer = setTimeout(() => {
-      setWait(false);
-    }, 1000);
-
-    return () => {
-      clearTimeout(timer);
-    };
-  };
-
-  const submitFunction: SubmitHandler<LoginInputs> = () => {
-    getValues("email") === context?.email &&
-    getValues("password") === context?.password
-      ? setValidate(true)
-      : setValidate(false);
-    setWait(true);
-    validationFun();
-
-    console.log(`validate 2: ${validate}`);
-    console.log(`wait: ${wait}`);
-    if (!wait && validate) {
-      navigate("/allContent");
+  const navigate = useNavigate();
+  const submitFunction: SubmitHandler<LoginInputs> = async (data) => {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/login`,
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      //displays message ;
+      if (response.data.success) {
+        // login successful
+        handleSuccess(response.data.message);
+        localStorage.setItem("authToken", response.data.token);
+        //after 1 second navigate to login page
+        setTimeout(() => {
+          navigate("/allContent");
+        }, 1000);
+      } else {
+        // log in failed
+        handleError(response.data.message);
+      }
+    } catch (error) {
+      //console.error("Login failed", error);
+      handleError("Login failed, server error");
     }
   };
-
-  console.log(`validate 1: ${validate}`);
 
   return (
     <FormPageStyle>
@@ -91,13 +104,7 @@ const Login = () => {
           Don’t have an account? <Link to={"/signUp"}>Sign Up</Link>
         </p>
       </div>
-      {wait && (
-        <span className={validate ? "note note-success" : "note note-fail"}>
-          {validate
-            ? "Login successfully"
-            : "User not found, check email or password"}
-        </span>
-      )}
+      <ToastContainer />
     </FormPageStyle>
   );
 };

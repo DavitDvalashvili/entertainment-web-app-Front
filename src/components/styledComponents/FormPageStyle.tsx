@@ -129,6 +129,8 @@ const FormPageStyle = styled.div`
   @media (min-width: 1440px) {
     gap: 82.99px;
     padding: 78.41px 24px 205px 24px;
+    width: 100vw;
+    height: 100vh;
   }
 `;
 

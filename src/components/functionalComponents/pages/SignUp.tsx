@@ -8,8 +8,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const SignUp = () => {
-  const navigate = useNavigate();
-
   // display error message on the screen
   const handleError = (message: string | undefined) => {
     toast.error(message, {
@@ -33,16 +31,19 @@ const SignUp = () => {
     formState: { errors },
   } = useForm<SignUpInputs>();
 
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
+  //send post request to register user
   const submitFunction: SubmitHandler<SignUpInputs> = async (data) => {
-    //navigate("/login");
-    //console.log(data);
     try {
-      const response = await axios.post("http://localhost:3003/signup", data, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/signup`,
+        data,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       //displays message ;
       if (response.data.success) {
         // Sign-up successful

@@ -3,11 +3,18 @@ import avatar from "../../assets/image-avatar.png";
 import HeaderStyle from "../styledComponents/HeaderStyle";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import { headerPropsType } from "../../Types";
 
-const Header = () => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
+const Header = (props: headerPropsType) => {
   const location = useLocation();
   const currentPathName = location.pathname;
+
+  const logOut = () => {
+    if (!props.expired) {
+      localStorage.removeItem("authToken");
+      props.setExpired(true);
+    }
+  };
 
   return (
     <HeaderStyle>
@@ -74,7 +81,10 @@ const Header = () => {
           </svg>
         </Link>
       </nav>
-      <img src={avatar} className="avatar" alt="avatar" />
+      <div className="logoutAvatarBox">
+        <span onClick={logOut}>LOG OUT</span>
+        <img src={avatar} className="avatar" alt="avatar" />
+      </div>
     </HeaderStyle>
   );
 };

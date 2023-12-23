@@ -1,7 +1,12 @@
 import { Navigate } from "react-router-dom";
 
 const Home = () => {
-  return <Navigate to="login" />;
+  const Token = localStorage.getItem("authToken");
+  if (Token) {
+    return <Navigate to="allContent" />;
+  } else {
+    return <Navigate to="login" />;
+  }
 };
 
 export default Home;

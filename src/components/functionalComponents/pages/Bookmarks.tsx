@@ -1,16 +1,27 @@
 import Layout from "../../styledComponents/Layout";
 import Header from "../Header";
 import SearchBox from "../SearchBox";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PageContent from "../PageContent";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Bookmarks = () => {
   const [searchValue, setSearchValue] = useState<string>("");
   const location = useLocation();
+
+  const [expired, setExpired] = useState(false);
+  const Token = localStorage.getItem("authToken");
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!Token) {
+      navigate("/login");
+      setExpired(true);
+    }
+  }, [Token, expired, navigate]);
+
   return (
     <Layout>
-      <Header />
+      <Header expired={expired} setExpired={setExpired} />
       <section className="main">
         <SearchBox searchValue={searchValue} setSearchValue={setSearchValue} />
         <PageContent

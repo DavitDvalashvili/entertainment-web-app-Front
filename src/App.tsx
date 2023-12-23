@@ -1,4 +1,4 @@
-import { useState, useEffect, createContext } from "react";
+import { useState, useEffect } from "react";
 import {
   RouterProvider,
   createBrowserRouter,
@@ -14,12 +14,6 @@ import Login from "./components/functionalComponents/pages/Login";
 import SignUp from "./components/functionalComponents/pages/SignUp";
 import Home from "./components/functionalComponents/pages/Home";
 import Preloader from "./components/functionalComponents/Preloader";
-import { UserContextType } from "./Types";
-
-// eslint-disable-next-line react-refresh/only-export-components
-export const userContext = createContext<undefined | UserContextType>(
-  undefined
-);
 
 function App() {
   const [load, setLoad] = useState(true);
@@ -38,11 +32,6 @@ function App() {
     )
   );
 
-  const contextValue = {
-    load,
-    setLoad,
-  };
-
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoad(false);
@@ -57,9 +46,7 @@ function App() {
     <>
       <GlobalStyle />
       <Preloader load={load} />
-      <userContext.Provider value={contextValue}>
-        <RouterProvider router={router} />
-      </userContext.Provider>
+      <RouterProvider router={router} />
     </>
   );
 }

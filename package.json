@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "axios": "^1.6.2",
+    "dotenv": "^16.3.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.48.2",
@@ -19,6 +20,7 @@
     "swiper": "^11.0.4"
   },
   "devDependencies": {
+    "@types/node": "^20.10.5",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@types/styled-components": "^5.1.30",
