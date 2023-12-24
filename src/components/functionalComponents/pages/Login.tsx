@@ -85,7 +85,7 @@ const Login = () => {
             className={errors.password ? "password errorPassword" : "password"}
           >
             <input
-              type="text"
+              type="password"
               placeholder="Password"
               {...register("password", {
                 required: "Can’t be empty",
