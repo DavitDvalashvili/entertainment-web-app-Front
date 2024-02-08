@@ -19,6 +19,8 @@ const Bookmarks = () => {
     }
   }, [Token, expired, navigate]);
 
+  console.log(searchValue);
+
   return (
     <Layout>
       <Header expired={expired} setExpired={setExpired} />
@@ -30,12 +32,14 @@ const Bookmarks = () => {
           pathname={`${location.pathname}/Movies`}
           header={"Bookmarked Movies"}
         />
-        <PageContent
-          searchValue={searchValue}
-          setSearchValue={setSearchValue}
-          pathname={`${location.pathname}/tvSeries`}
-          header={"Bookmarked TV Series"}
-        />
+        {!searchValue && (
+          <PageContent
+            searchValue={searchValue}
+            setSearchValue={setSearchValue}
+            pathname={`${location.pathname}/tvSeries`}
+            header={"Bookmarked TV Series"}
+          />
+        )}
       </section>
     </Layout>
   );

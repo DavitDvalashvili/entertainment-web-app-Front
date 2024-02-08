@@ -6,8 +6,10 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useState } from "react";
 
 const SignUp = () => {
+  const [loading, setLoading] = useState<boolean>(false);
   // display error message on the screen
   const handleError = (message: string | undefined) => {
     toast.error(message, {
@@ -35,6 +37,7 @@ const SignUp = () => {
   //send post request to register user
   const submitFunction: SubmitHandler<SignUpInputs> = async (data) => {
     try {
+      setLoading(true);
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/signup`,
         data,
@@ -51,14 +54,17 @@ const SignUp = () => {
         //after 1 second navigate to login page
         setTimeout(() => {
           navigate("/login");
+          setLoading(false);
         }, 1000);
       } else {
         // Sign-up failed
         handleError(response.data.message);
+        setLoading(false);
       }
     } catch (error) {
       console.error("Sign-up failed", error);
       handleError("Sign-up failed, server error");
+      setLoading(false);
     }
   };
 
@@ -129,7 +135,13 @@ const SignUp = () => {
               <span>{errors.repeatPassword.message}</span>
             )}
           </div>
-          <button type="submit">Create an account</button>
+          <button
+            type="submit"
+            style={loading ? { cursor: "wait" } : {}}
+            disabled={loading}
+          >
+            {loading ? "Loading..." : "Create an account"}
+          </button>
         </form>
         <p>
           Already have an account? <Link to={"/login"}>Login</Link>

@@ -6,8 +6,11 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useState } from "react";
 
 const Login = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+
   // display error message on the screen
   const handleError = (message: string | undefined) => {
     toast.error(message, {
@@ -33,6 +36,7 @@ const Login = () => {
   const navigate = useNavigate();
   const submitFunction: SubmitHandler<LoginInputs> = async (data) => {
     try {
+      setLoading(true);
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/login`,
         data,
@@ -48,16 +52,20 @@ const Login = () => {
         handleSuccess(response.data.message);
         localStorage.setItem("authToken", response.data.token);
         //after 1 second navigate to login page
+
         setTimeout(() => {
           navigate("/allContent");
+          setLoading(false);
         }, 1000);
       } else {
         // log in failed
         handleError(response.data.message);
+        setLoading(false);
       }
     } catch (error) {
       //console.error("Login failed", error);
       handleError("Login failed, server error");
+      setLoading(false);
     }
   };
 
@@ -98,7 +106,13 @@ const Login = () => {
             />
             {errors.password && <span>{errors.password.message}</span>}
           </div>
-          <button type="submit">Login to your account</button>
+          <button
+            type="submit"
+            disabled={loading}
+            style={loading ? { cursor: "wait" } : {}}
+          >
+            {loading ? "Loading" : "Login to your account"}
+          </button>
         </form>
         <p>
           Don’t have an account? <Link to={"/signUp"}>Sign Up</Link>
