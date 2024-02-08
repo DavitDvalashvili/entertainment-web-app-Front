@@ -12,6 +12,9 @@ const PageContent = (props: PagePropsType) => {
   const [movies, setMovies] = useState<DataType[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [category, setCategory] = useState<string>("");
+  const [bookmark, setBookmark] = useState<boolean>(false);
+  //const [searchValue, setSearchValue] = useState<string>("");
 
   // useWindowWidth custom hook for responsive site
   const width = useWindowWidth();
@@ -31,25 +34,36 @@ const PageContent = (props: PagePropsType) => {
   };
 
   useEffect(() => {
+    setCategory(window.location.pathname.slice(1));
+    console.log(window.location.pathname === "/bookmarks");
+    {
+      window.location.pathname === "/bookmarks" && setBookmark(true);
+    }
     fetchData();
   }, []);
 
   useEffect(() => {
-    const filteredMovie = movies.filter(
-      (movie) =>
-        movie.title.toLowerCase().includes(props.searchValue) ||
-        movie.title.includes(props.searchValue)
-    );
-    if (props.searchValue) {
-      setMovies(filteredMovie);
-    } else {
-      fetchData();
+    const filterMovie = async () => {
+      try {
+        const response = await axios.get<DataType[]>(
+          `${import.meta.env.VITE_API_URL}/filterMovies?searchTerm=${
+            props.searchValue
+          }&category=${category}&bookmark=${bookmark}`
+        );
+        setMovies(response.data);
+      } catch (error) {
+        setError("Error fetching data");
+      }
+    };
+
+    {
+      props.searchValue ? filterMovie() : fetchData();
     }
   }, [props.searchValue]);
 
   //print loading... when data is loading
   if (loading) {
-    console.log(loading);
+    //console.log(loading);
   }
 
   //print error if error occur while getting data
