@@ -111,7 +111,7 @@ const Login = () => {
             disabled={loading}
             style={loading ? { cursor: "wait" } : {}}
           >
-            {loading ? "Loading" : "Login to your account"}
+            {loading ? "Loading..." : "Login to your account"}
           </button>
         </form>
         <p>
