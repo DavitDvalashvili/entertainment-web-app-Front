@@ -35,7 +35,7 @@ const PageContent = (props: PagePropsType) => {
 
   useEffect(() => {
     setCategory(window.location.pathname.slice(1));
-    console.log(window.location.pathname === "/bookmarks");
+
     {
       window.location.pathname === "/bookmarks" && setBookmark(true);
     }

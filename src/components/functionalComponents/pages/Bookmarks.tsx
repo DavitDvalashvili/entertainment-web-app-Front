@@ -19,8 +19,6 @@ const Bookmarks = () => {
     }
   }, [Token, expired, navigate]);
 
-  console.log(searchValue);
-
   return (
     <Layout>
       <Header expired={expired} setExpired={setExpired} />
