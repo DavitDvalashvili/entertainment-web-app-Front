@@ -49,7 +49,7 @@ Users should be able to:
 
 - Front-End Solution URL: [Add solution URL here](https://github.com/DavitDvalashvili/entertainment-web-app-front)
 - Back-End Solution URL: [Add solution URL here](https://github.com/DavitDvalashvili/entertainment-web-app-back)
-- Live Site URL: [Add live site URL here](https://entertainment-web-app-front-dun.vercel.app)
+- Live Site URL: [Add live site URL here](https://entertainment-web-app-front-seven.vercel.app)
 
 ### Getting Started
 
