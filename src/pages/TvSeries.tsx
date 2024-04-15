@@ -1,14 +1,13 @@
-import Layout from "../../styledComponents/Layout";
-import Header from "../Header";
-import SearchBox from "../SearchBox";
+import Header from "../components/functionalComponents/Header";
+import Layout from "../components/styledComponents/Layout";
+import SearchBox from "../components/functionalComponents/SearchBox";
+import PageContent from "../components/functionalComponents/PageContent";
 import { useState, useEffect } from "react";
-import PageContent from "../PageContent";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const Bookmarks = () => {
+const TvSeries = () => {
   const [searchValue, setSearchValue] = useState<string>("");
   const location = useLocation();
-
   const [expired, setExpired] = useState(false);
   const Token = localStorage.getItem("authToken");
   const navigate = useNavigate();
@@ -21,26 +20,18 @@ const Bookmarks = () => {
 
   return (
     <Layout>
-      <Header expired={expired} setExpired={setExpired} />
+      <Header />
       <section className="main">
         <SearchBox searchValue={searchValue} setSearchValue={setSearchValue} />
         <PageContent
           searchValue={searchValue}
           setSearchValue={setSearchValue}
-          pathname={`${location.pathname}/Movies`}
-          header={"Bookmarked Movies"}
+          pathname={location.pathname}
+          header="TV Series"
         />
-        {!searchValue && (
-          <PageContent
-            searchValue={searchValue}
-            setSearchValue={setSearchValue}
-            pathname={`${location.pathname}/tvSeries`}
-            header={"Bookmarked TV Series"}
-          />
-        )}
       </section>
     </Layout>
   );
 };
 
-export default Bookmarks;
+export default TvSeries;

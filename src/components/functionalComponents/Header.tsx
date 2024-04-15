@@ -3,16 +3,27 @@ import avatar from "../../assets/image-avatar.png";
 import HeaderStyle from "../styledComponents/HeaderStyle";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import { headerPropsType } from "../../Types";
+import { useContext } from "react";
+import { authentication } from "../../App";
+import axios from "axios";
 
-const Header = (props: headerPropsType) => {
+const Header = () => {
   const location = useLocation();
   const currentPathName = location.pathname;
 
-  const logOut = () => {
-    if (!props.expired) {
-      localStorage.removeItem("authToken");
-      props.setExpired(true);
+  const authContext = useContext(authentication);
+  console.log(authContext?.authenticated);
+
+  const SignOut = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3003/api/signOut`, {
+        withCredentials: true,
+      });
+      if (response.status === 200) {
+        authContext?.setAuthenticated(false);
+      }
+    } catch (error) {
+      console.log("error while signOut", error);
     }
   };
 
@@ -20,11 +31,9 @@ const Header = (props: headerPropsType) => {
     <HeaderStyle>
       <img src={logo} className="logo" alt="logo" />
       <nav>
-        <Link to={"/allContent"}>
+        <Link to={"/home"}>
           <svg
-            className={
-              currentPathName == "/allContent" ? "home active" : "home"
-            }
+            className={currentPathName == "/home" ? "home active" : "home"}
             width="20"
             height="20"
             xmlns="http://www.w3.org/2000/svg"
@@ -35,11 +44,9 @@ const Header = (props: headerPropsType) => {
             />
           </svg>
         </Link>
-        <Link to="/movies">
+        <Link to="/Movie">
           <svg
-            className={
-              currentPathName == "/movies" ? "movies active" : "movies"
-            }
+            className={currentPathName == "/Movie" ? "movies active" : "movies"}
             width="20"
             height="20"
             xmlns="http://www.w3.org/2000/svg"
@@ -50,10 +57,10 @@ const Header = (props: headerPropsType) => {
             />
           </svg>
         </Link>
-        <Link to="/tvSeries">
+        <Link to="/TV Series">
           <svg
             className={
-              currentPathName == "/tvSeries" ? "tvSeries active" : "tvSeries"
+              currentPathName == "/TV%20Series" ? "tvSeries active" : "tvSeries"
             }
             width="20"
             height="20"
@@ -65,10 +72,10 @@ const Header = (props: headerPropsType) => {
             />
           </svg>
         </Link>
-        <Link to="/bookmarks">
+        <Link to="/bookmark">
           <svg
             className={
-              currentPathName == "/bookmarks" ? "bookmark active" : "bookmark"
+              currentPathName == "/bookmark" ? "bookmark active" : "bookmark"
             }
             width="17"
             height="20"
@@ -82,7 +89,13 @@ const Header = (props: headerPropsType) => {
         </Link>
       </nav>
       <div className="logoutAvatarBox">
-        <span onClick={logOut}>LOG OUT</span>
+        {authContext?.authenticated ? (
+          <span onClick={SignOut}>SIGN OUT</span>
+        ) : (
+          <Link to="/signIn">
+            <span>SIGN IN</span>
+          </Link>
+        )}
         <img src={avatar} className="avatar" alt="avatar" />
       </div>
     </HeaderStyle>

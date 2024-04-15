@@ -7,78 +7,91 @@ import useWindowWidth from "../../Hooks/useWindowWidth";
 import playIcon from "../../assets/icon-play.svg";
 import iconMovies from "../../assets/icon-category-movie.svg";
 import iconTvseries from "../../assets/icon-category-tv.svg";
+import { useLocation } from "react-router-dom";
+import { useContext } from "react";
+import { authentication } from "../../App";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const PageContent = (props: PagePropsType) => {
   const [movies, setMovies] = useState<DataType[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [category, setCategory] = useState<string>("");
-  const [bookmark, setBookmark] = useState<boolean>(false);
-  //const [searchValue, setSearchValue] = useState<string>("");
+  const [Update, setUpdate] = useState(false);
+  const location = useLocation();
 
   // useWindowWidth custom hook for responsive site
   const width = useWindowWidth();
 
-  //create get request
-  const fetchData = async () => {
+  const authContext = useContext(authentication);
+
+  const GetMovies = async () => {
     try {
-      const response = await axios.get<DataType[]>(
-        `${import.meta.env.VITE_API_URL}${props.pathname}`
-      );
+      const category = location.pathname.slice(1);
+      const searchTerm = props.searchValue;
+      const isBookmark = category === "bookmark";
+      let apiUrl;
+
+      if (isBookmark) {
+        // Fetch only movies for bookmark category
+        apiUrl = `${import.meta.env.VITE_API_URL}/api/getMovies/?category=${
+          props.pathname
+        }&searchTerm=${searchTerm}&bookmark=true`;
+      } else {
+        // Fetch based on the provided category for non-bookmark categories
+        apiUrl = `${
+          import.meta.env.VITE_API_URL
+        }/api/getMovies/?category=${category}&searchTerm=${searchTerm}&bookmark=false`;
+      }
+
+      const response = await axios.get<DataType[]>(apiUrl);
       setMovies(response.data);
     } catch (error) {
-      setError(`Error fetching data`);
+      setError("Error fetching data");
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    setCategory(window.location.pathname.slice(1));
-
-    {
-      window.location.pathname === "/bookmarks" && setBookmark(true);
-    }
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const filterMovie = async () => {
-      try {
-        const response = await axios.get<DataType[]>(
-          `${import.meta.env.VITE_API_URL}/filterMovies?searchTerm=${
-            props.searchValue
-          }&category=${category}&bookmark=${bookmark}`
-        );
-        setMovies(response.data);
-      } catch (error) {
-        setError("Error fetching data");
-      }
-    };
-
-    {
-      props.searchValue ? filterMovie() : fetchData();
-    }
-  }, [props.searchValue]);
-
-  //print loading... when data is loading
-  if (loading) {
-    //console.log(loading);
-  }
+    GetMovies();
+  }, [props.searchValue, Update]);
 
   //print error if error occur while getting data
   if (error) {
-    return <p>Error: {error}</p>;
+    return (
+      <p
+        style={{
+          textAlign: "center",
+        }}
+      >
+        Error: {error}
+      </p>
+    );
+  }
+
+  if (loading) {
+    return (
+      <p
+        style={{
+          textAlign: "center",
+        }}
+      >
+        Loading...
+      </p>
+    );
   }
 
   //base url
   const baseUrl = window.location.origin;
 
   //send put request
-  const bookmarkToggle = async (movieID: string) => {
+  const UpdateMovie = async (movieID: string) => {
     try {
-      const response = await axios.put(
-        `${import.meta.env.VITE_API_URL}/movies/${movieID}`
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/updateMovie/${movieID}`,
+        null,
+        { withCredentials: true }
       );
 
       //update movie info and render new info
@@ -88,11 +101,18 @@ const PageContent = (props: PagePropsType) => {
         }
         return movie;
       });
-
       setMovies(updatedMovies);
-      fetchData();
+      setUpdate(!Update);
     } catch (error) {
-      console.log("Error toggling bookmark:", error);
+      console.log(error);
+      authContext?.setAuthenticated(false);
+      toast.error("Sign In to add Bookmark", {
+        position: "bottom-center",
+        autoClose: 1000,
+        style: {
+          backgroundColor: "#10141E",
+        },
+      });
     }
   };
 
@@ -120,7 +140,7 @@ const PageContent = (props: PagePropsType) => {
                     alt="movie Image"
                   />
                   <div className="upperLayer">
-                    <div onClick={() => bookmarkToggle(movie.id)}>
+                    <div onClick={() => UpdateMovie(movie.id)}>
                       {!movie.isBookmarked && (
                         <svg
                           className="bookmarkEmpty"
@@ -176,6 +196,7 @@ const PageContent = (props: PagePropsType) => {
               </div>
             ))}
           </div>
+          <ToastContainer />
         </PageContentStyle>
       )}
     </>

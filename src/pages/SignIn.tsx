@@ -1,15 +1,19 @@
-import FormPageStyle from "../../styledComponents/FormPageStyle";
+import FormPageStyle from "../components/styledComponents/FormPageStyle";
 import { Link, useNavigate } from "react-router-dom";
-import logo from "../../../assets/logo.svg";
-import { LoginInputs } from "../../../Types";
+import logo from "../assets/logo.svg";
+import { LoginInputs } from "../Types";
 import { useForm, SubmitHandler } from "react-hook-form";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useState } from "react";
+import { useContext } from "react";
+import { authentication } from "../App";
 
-const Login = () => {
+const SignIn = () => {
   const [loading, setLoading] = useState<boolean>(false);
+
+  const authContext = useContext(authentication);
 
   // display error message on the screen
   const handleError = (message: string | undefined) => {
@@ -38,12 +42,13 @@ const Login = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/login`,
+        `${import.meta.env.VITE_API_URL}/api/signIn`,
         data,
         {
           headers: {
             "Content-Type": "application/json",
           },
+          withCredentials: true,
         }
       );
       //displays message ;
@@ -52,10 +57,11 @@ const Login = () => {
         handleSuccess(response.data.message);
         localStorage.setItem("authToken", response.data.token);
         //after 1 second navigate to login page
-
+        localStorage.setItem("authenticated", "true");
         setTimeout(() => {
-          navigate("/allContent");
+          navigate("/home");
           setLoading(false);
+          authContext?.setAuthenticated(true);
         }, 1000);
       } else {
         // log in failed
@@ -73,7 +79,7 @@ const Login = () => {
     <FormPageStyle>
       <img src={logo} alt="logo" />
       <div className="container">
-        <h2>Login</h2>
+        <h2>SignIn</h2>
         <form onSubmit={handleSubmit(submitFunction)}>
           <div className={errors.email ? "email errorEmail" : "email"}>
             <input
@@ -106,12 +112,8 @@ const Login = () => {
             />
             {errors.password && <span>{errors.password.message}</span>}
           </div>
-          <button
-            type="submit"
-            disabled={loading}
-            style={loading ? { cursor: "wait" } : {}}
-          >
-            {loading ? "Loading..." : "Login to your account"}
+          <button type="submit" disabled={loading}>
+            {loading ? "Loading..." : "SignIn to your account"}
           </button>
         </form>
         <p>
@@ -123,4 +125,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignIn;

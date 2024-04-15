@@ -1,17 +1,17 @@
-import Header from "../Header";
-import Layout from "../../styledComponents/Layout";
-import Trending from "../Trending";
-import SearchBox from "../SearchBox";
-import { useEffect, useState } from "react";
-import PageContent from "../PageContent";
-import { useNavigate } from "react-router-dom";
+import Header from "../components/functionalComponents/Header";
+import Layout from "../components/styledComponents/Layout";
+import SearchBox from "../components/functionalComponents/SearchBox";
+import PageContent from "../components/functionalComponents/PageContent";
+import { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const AllContent = () => {
+const Movie = () => {
   const [searchValue, setSearchValue] = useState<string>("");
-  const navigate = useNavigate();
+  const location = useLocation();
 
   const [expired, setExpired] = useState(false);
   const Token = localStorage.getItem("authToken");
+  const navigate = useNavigate();
   useEffect(() => {
     if (!Token) {
       navigate("/login");
@@ -21,19 +21,18 @@ const AllContent = () => {
 
   return (
     <Layout>
-      <Header expired={expired} setExpired={setExpired} />
+      <Header />
       <section className="main">
         <SearchBox searchValue={searchValue} setSearchValue={setSearchValue} />
-        {!searchValue && <Trending />}
         <PageContent
           searchValue={searchValue}
           setSearchValue={setSearchValue}
-          pathname={"/"}
-          header="Recommended for you"
+          pathname={location.pathname}
+          header="Movies"
         />
       </section>
     </Layout>
   );
 };
 
-export default AllContent;
+export default Movie;

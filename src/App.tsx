@@ -1,53 +1,50 @@
-import { useState, useEffect } from "react";
 import {
   RouterProvider,
   createBrowserRouter,
   createRoutesFromElements,
   Route,
 } from "react-router-dom";
-import AllContent from "./components/functionalComponents/pages/AllContent";
-import Movies from "./components/functionalComponents/pages/Movies";
-import TvSeries from "./components/functionalComponents/pages/TvSeries";
-import Bookmarks from "./components/functionalComponents/pages/Bookmarks";
+import Home from "./pages/Home";
+import { Navigate } from "react-router-dom";
+import Movie from "./pages/Movie";
+import TvSeries from "./pages/TvSeries";
+import Bookmarks from "./pages/Bookmarks";
 import GlobalStyle from "./GlobalStyles";
-import Login from "./components/functionalComponents/pages/Login";
-import SignUp from "./components/functionalComponents/pages/SignUp";
-import Home from "./components/functionalComponents/pages/Home";
-import Preloader from "./components/functionalComponents/Preloader";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
+import { createContext } from "react";
+import { auth } from "./Types";
+export const authentication = createContext<auth | null>(null);
+import { useState } from "react";
 
 function App() {
-  const [load, setLoad] = useState(true);
+  const [authenticated, setAuthenticated] = useState(
+    localStorage.getItem("authenticated") == "true"
+  );
+  const contextValue = {
+    authenticated,
+    setAuthenticated,
+  };
 
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/">
-        <Route index element={<Home />} />
-        <Route path="login" element={<Login />} />
+        <Route index element={<Navigate to="/home" replace />} />
+        <Route path="home" element={<Home />} />
+        <Route path="Movie" element={<Movie />} />
+        <Route path="signIn" element={<SignIn />} />
         <Route path="signUp" element={<SignUp />} />
-        <Route path="allContent" element={<AllContent />} />
-        <Route path="movies" element={<Movies />} />
-        <Route path="tvSeries" element={<TvSeries />} />
-        <Route path="bookmarks" element={<Bookmarks />} />
+        <Route path="TV Series" element={<TvSeries />} />
+        <Route path="bookmark" element={<Bookmarks />} />
       </Route>
     )
   );
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoad(false);
-    }, 300);
-
-    return () => {
-      clearTimeout(timer);
-    };
-  }, []);
-
   return (
-    <>
+    <authentication.Provider value={contextValue}>
       <GlobalStyle />
-      <Preloader load={load} />
       <RouterProvider router={router} />
-    </>
+    </authentication.Provider>
   );
 }
 

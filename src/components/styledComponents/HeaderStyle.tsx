@@ -11,6 +11,9 @@ const HeaderStyle = styled.nav`
     width: 25px;
   }
   .logoutAvatarBox {
+    a {
+      text-decoration: none;
+    }
     .avatar {
       width: 24px;
       border: 1px solid ${DefaultTheme.colors.pureWhite};
@@ -25,6 +28,7 @@ const HeaderStyle = styled.nav`
       &:hover {
         cursor: pointer;
         color: ${DefaultTheme.colors.red};
+        text-decoration: none;
       }
     }
   }

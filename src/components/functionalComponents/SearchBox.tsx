@@ -4,7 +4,6 @@ import { searchPropsType } from "../../Types";
 import DefaultTheme from "../../DefaultTheme";
 
 const SearchBox = (props: searchPropsType) => {
-  //console.log(props.searchValue);
   return (
     <StyledBox>
       <img src={search} alt="searchIcon" />

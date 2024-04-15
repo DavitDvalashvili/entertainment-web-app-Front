@@ -1,6 +1,6 @@
-import FormPageStyle from "../../styledComponents/FormPageStyle";
-import Logo from "../../../assets/logo.svg";
-import { SignUpInputs } from "../../../Types";
+import FormPageStyle from "../components/styledComponents/FormPageStyle";
+import Logo from "../assets/logo.svg";
+import { SignUpInputs } from "../Types";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import axios from "axios";
@@ -39,7 +39,7 @@ const SignUp = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/signup`,
+        `${import.meta.env.VITE_API_URL}/api/signUp`,
         data,
         {
           headers: {
@@ -53,7 +53,7 @@ const SignUp = () => {
         handleSuccess(response.data.message);
         //after 1 second navigate to login page
         setTimeout(() => {
-          navigate("/login");
+          navigate("/signIn");
           setLoading(false);
         }, 1000);
       } else {
@@ -135,16 +135,12 @@ const SignUp = () => {
               <span>{errors.repeatPassword.message}</span>
             )}
           </div>
-          <button
-            type="submit"
-            style={loading ? { cursor: "wait" } : {}}
-            disabled={loading}
-          >
+          <button type="submit" disabled={loading}>
             {loading ? "Loading..." : "Create an account"}
           </button>
         </form>
         <p>
-          Already have an account? <Link to={"/login"}>Login</Link>
+          Already have an account? <Link to={"/signIn"}>Sign In</Link>
         </p>
       </div>
       <ToastContainer />

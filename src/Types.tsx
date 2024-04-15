@@ -49,3 +49,8 @@ export interface DataType {
   isBookmarked: boolean;
   id: string;
 }
+
+export interface auth {
+  authenticated: boolean;
+  setAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
+}

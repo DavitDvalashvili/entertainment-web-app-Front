@@ -103,6 +103,11 @@ const PageContentStyle = styled.section`
       }
     }
   }
+  .Toastify__toast-body {
+    div {
+      color: "#000000";
+    }
+  }
   @media (min-width: 768px) {
     padding: 39px 24px 0px 24px;
     h2 {

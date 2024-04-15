@@ -7,52 +7,45 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import play from "../../assets/icon-play.svg";
 import useWindowWidth from "../../Hooks/useWindowWidth";
 import { DataType } from "../../Types";
+import { authentication } from "../../App";
+import { useContext } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-function MovieList() {
+function Trending() {
   const [movies, setMovies] = useState<DataType[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   //use UseWindowWidth custom hook;
   const width = useWindowWidth();
 
+  const authContext = useContext(authentication);
+
   //create get request
-  async function fetchData() {
+  const GetMovies = async () => {
     try {
       const response = await axios.get<DataType[]>(
-        `${import.meta.env.VITE_API_URL}`
+        `${import.meta.env.VITE_API_URL}/api/getMovies`
       );
       setMovies(response.data);
     } catch (error) {
-      setError("Error fetching data");
-    } finally {
-      setLoading(false);
+      console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
-    fetchData();
+    GetMovies();
   }, []);
 
-  //print loading... when data is loading
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  //print error if error occur while getting data
-  if (error) {
-    return <p>Error: {error}</p>;
-  }
-
-  const baseUrl = window.location.origin;
-
-  const bookmarkToggle = async (movieID: string) => {
+  //send put request
+  const UpdateMovie = async (movieID: string) => {
     try {
-      const response = await axios.put(
-        `${import.meta.env.VITE_API_URL}/movies/${movieID}`
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/updateMovie/${movieID}`,
+        null,
+        { withCredentials: true }
       );
 
-      //update movie info abd render new info
+      //update movie info and render new info
       const updatedMovies = movies.map((movie) => {
         if (movie.id === movieID) {
           return { ...movie, isBookmarked: response.data.isBookmarked };
@@ -63,8 +56,18 @@ function MovieList() {
       setMovies(updatedMovies);
     } catch (error) {
       console.log("Error toggling bookmark:", error);
+      authContext?.setAuthenticated(false);
+      toast.error("Sign In to add Bookmark", {
+        position: "bottom-center",
+        autoClose: 1000,
+        style: {
+          backgroundColor: "#10141E",
+        },
+      });
     }
   };
+
+  const baseUrl = window.location.origin;
 
   return (
     <TrendingStyle>
@@ -88,7 +91,7 @@ function MovieList() {
                     <div className="textBox">
                       <div
                         className="imageBox"
-                        onClick={() => bookmarkToggle(movie.id)}
+                        onClick={() => UpdateMovie(movie.id)}
                       >
                         {!movie.isBookmarked && (
                           <svg
@@ -146,9 +149,10 @@ function MovieList() {
               )
           )}
         </Swiper>
+        <ToastContainer />
       </div>
     </TrendingStyle>
   );
 }
 
-export default MovieList;
+export default Trending;
