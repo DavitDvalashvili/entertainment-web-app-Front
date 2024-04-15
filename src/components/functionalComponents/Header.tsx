@@ -16,9 +16,12 @@ const Header = () => {
 
   const SignOut = async () => {
     try {
-      const response = await axios.get(`http://localhost:3003/api/signOut`, {
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/signOut`,
+        {
+          withCredentials: true,
+        }
+      );
       if (response.status === 200) {
         authContext?.setAuthenticated(false);
       }
