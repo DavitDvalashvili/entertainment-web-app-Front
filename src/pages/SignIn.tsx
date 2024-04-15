@@ -55,9 +55,8 @@ const SignIn = () => {
       if (response.data.success) {
         // login successful
         handleSuccess(response.data.message);
-        localStorage.setItem("authToken", response.data.token);
-        //after 1 second navigate to login page
         localStorage.setItem("authenticated", "true");
+        //after 1 second navigate to login page
         setTimeout(() => {
           navigate("/home");
           setLoading(false);

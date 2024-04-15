@@ -12,7 +12,6 @@ const Header = () => {
   const currentPathName = location.pathname;
 
   const authContext = useContext(authentication);
-  console.log(authContext?.authenticated);
 
   const SignOut = async () => {
     try {
@@ -24,6 +23,7 @@ const Header = () => {
       );
       if (response.status === 200) {
         authContext?.setAuthenticated(false);
+        localStorage.setItem("authenticated", "false");
       }
     } catch (error) {
       console.log("error while signOut", error);
