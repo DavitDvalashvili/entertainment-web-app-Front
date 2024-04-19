@@ -17,7 +17,6 @@ import { auth } from "./Types";
 export const authentication = createContext<auth | null>(null);
 import { useState } from "react";
 
-//App
 function App() {
   const [authenticated, setAuthenticated] = useState(
     localStorage.getItem("authenticated") == "true"
