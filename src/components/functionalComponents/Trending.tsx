@@ -14,6 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 function Trending() {
   const [movies, setMovies] = useState<DataType[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   //use UseWindowWidth custom hook;
   const width = useWindowWidth();
@@ -23,10 +24,12 @@ function Trending() {
   //create get request
   const GetMovies = async () => {
     try {
+      setLoading(true);
       const response = await axios.get<DataType[]>(
         `${import.meta.env.VITE_API_URL}/api/getMovies`
       );
       setMovies(response.data);
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -71,7 +74,7 @@ function Trending() {
 
   return (
     <TrendingStyle>
-      <h2>Trending</h2>
+      {!loading && <h2>Trending</h2>}
       <div className="movieContainer">
         <Swiper spaceBetween={10} slidesPerView={"auto"}>
           {movies.map(
